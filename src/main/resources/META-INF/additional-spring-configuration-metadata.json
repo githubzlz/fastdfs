@@ -1,0 +1,19 @@
+{
+  "groups": [
+    {
+      "name": "fastdfs.config",
+      "type": "com.zlz.fastdfs.config.FastdfsConfig",
+      "sourceType": "com.zlz.fastdfs.config.FastdfsConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "fastdfs.config.config-file",
+      "type": "java.lang.String",
+      "sourceType": "com.zlz.fastdfs.config.FastdfsConfig",
+      "description": "Description for fastdfs.config.configFile.",
+      "defaultValue": "fdfs_client.conf"
+    }
+  ],
+  "hints": []
+}
