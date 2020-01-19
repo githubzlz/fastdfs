@@ -11,7 +11,6 @@ import java.net.URLDecoder;
  * @author zhulinzhong
  * @version 1.0 CreateTime:2020/1/11 23:41
  */
-@ConfigurationProperties("fastdfs.config")
 public class FastdfsConfig {
     private String configFile;
 
