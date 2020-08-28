@@ -1,6 +1,7 @@
 package com.zlz.fastdfs.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
@@ -12,13 +13,11 @@ import java.net.URLDecoder;
  * @version 1.0 CreateTime:2020/1/11 23:41
  */
 @ConfigurationProperties("fastdfs.config")
+@Component
 public class FastdfsConfig {
-    private String configFile;
+    private String configFile = "fdfs_client.conf";
 
-    public FastdfsConfig() throws FileNotFoundException, UnsupportedEncodingException {
-        this.configFile = URLDecoder.decode(ResourceUtils.getURL("classpath:").getPath(),"utf-8")
-                + "fdfs_client.conf";
-        this.configFile = this.configFile.substring(1);
+    public FastdfsConfig() {
     }
 
     public String getConfigFile() {
