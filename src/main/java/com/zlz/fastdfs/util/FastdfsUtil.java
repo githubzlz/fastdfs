@@ -1,9 +1,5 @@
 package com.zlz.fastdfs.util;
 
-/**
- * @author zhulinzhong
- * @version 1.0 CreateTime:2020/1/11 23:42
- */
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,26 +23,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class FastdfsUtil {
     private static Logger logger = LogManager.getLogger(FastdfsUtil.class);
-
-    private static StorageClient1 storageClient;
-
+    @Autowired
+    private FastdfsConfig config;
 
     public FastdfsUtil() {
-        try {
-            this.getStorageClient();
-        } catch (IOException | MyException e) {
-            logger.error("FastdfsUtil实例化失败");
-            e.printStackTrace();
-        }
-    }
-
-    private void getStorageClient() throws IOException, MyException {
-        FastdfsConfig config = new FastdfsConfig();
-        ClientGlobal.init(config.getConfigFile());
-        TrackerClient tracker = new TrackerClient();
-        TrackerServer trackerServer = tracker.getConnection();
-        StorageServer storageServer = null;
-        FastdfsUtil.storageClient = new StorageClient1(trackerServer, (StorageServer)storageServer);
     }
 
     public String uploadFile(byte[] fileByte, String fileName) throws IOException, MyException {
@@ -66,6 +46,11 @@ public class FastdfsUtil {
         }
 
         NameValuePair[] nvp = this.getMetaInfos(fileName, extName, metaInfos);
+        ClientGlobal.init(this.config.getConfigFile());
+        TrackerClient tracker = new TrackerClient();
+        TrackerServer trackerServer = tracker.getConnection();
+        StorageServer storageServer = null;
+        StorageClient1 storageClient = new StorageClient1(trackerServer, (StorageServer)storageServer);
         String fileIds = storageClient.upload_file1(fileByte, extName, nvp);
         return fileIds;
     }
@@ -87,6 +72,11 @@ public class FastdfsUtil {
         }
 
         NameValuePair[] nvp = this.getMetaInfos(fileName, extName, metaInfos);
+        ClientGlobal.init(this.config.getConfigFile());
+        TrackerClient tracker = new TrackerClient();
+        TrackerServer trackerServer = tracker.getConnection();
+        StorageServer storageServer = null;
+        StorageClient1 storageClient = new StorageClient1(trackerServer, (StorageServer)storageServer);
         String fileIds = storageClient.upload_file1(groupName, fileByte, extName, nvp);
         return fileIds;
     }
@@ -117,11 +107,21 @@ public class FastdfsUtil {
     }
 
     public byte[] downLoadFile(String fileId) throws IOException, MyException {
+        ClientGlobal.init(this.config.getConfigFile());
+        TrackerClient tracker = new TrackerClient();
+        TrackerServer trackerServer = tracker.getConnection();
+        StorageServer storageServer = null;
+        StorageClient1 storageClient = new StorageClient1(trackerServer, (StorageServer)storageServer);
         byte[] fileBytes = storageClient.download_file1(fileId);
         return fileBytes;
     }
 
     public boolean deleteFile(String fileId) throws IOException, MyException {
+        ClientGlobal.init(this.config.getConfigFile());
+        TrackerClient tracker = new TrackerClient();
+        TrackerServer trackerServer = tracker.getConnection();
+        StorageServer storageServer = null;
+        StorageClient1 storageClient = new StorageClient1(trackerServer, (StorageServer)storageServer);
         int i = storageClient.delete_file1(fileId);
         if (logger.isDebugEnabled()) {
             logger.debug(i == 0 ? "删除成功" : "删除失败:" + i);
@@ -131,13 +131,23 @@ public class FastdfsUtil {
     }
 
     public FileBasicInfo getFileBasicInfo(String fileId) throws IOException, MyException {
+        ClientGlobal.init(this.config.getConfigFile());
+        TrackerClient tracker = new TrackerClient();
+        TrackerServer trackerServer = tracker.getConnection();
+        StorageServer storageServer = null;
+        StorageClient1 storageClient = new StorageClient1(trackerServer, (StorageServer)storageServer);
         FileInfo fi = storageClient.get_file_info1(fileId);
         FileBasicInfo fbi = new FileBasicInfo(fi.getSourceIpAddr(), fi.getFileSize(), fi.getCreateTimestamp());
         return fbi;
     }
 
     public Map<String, String> getFileMetaInfo(String fileId) throws IOException, MyException {
+        ClientGlobal.init(this.config.getConfigFile());
         Map<String, String> mapMetaInfos = new HashMap();
+        TrackerClient tracker = new TrackerClient();
+        TrackerServer trackerServer = tracker.getConnection();
+        StorageServer storageServer = null;
+        StorageClient1 storageClient = new StorageClient1(trackerServer, (StorageServer)storageServer);
         NameValuePair[] nvps = storageClient.get_metadata1(fileId);
         if (nvps != null && nvps.length > 0) {
             NameValuePair[] var8 = nvps;
@@ -152,4 +162,3 @@ public class FastdfsUtil {
         return mapMetaInfos;
     }
 }
-
