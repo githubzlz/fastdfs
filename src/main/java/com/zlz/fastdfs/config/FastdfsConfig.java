@@ -1,6 +1,5 @@
 package com.zlz.fastdfs.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.ResourceUtils;
 
 import java.io.FileNotFoundException;
